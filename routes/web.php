@@ -29,6 +29,8 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Setting\KategoriLembagaController;
+use App\Http\Controllers\Setting\LembagaController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
@@ -739,6 +741,14 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
                 Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
             });
+
+        });
+
+        Route::group(['prefix' => 'setting', 'as' => 'setting.'], function(){
+            Route::resource('lembaga', LembagaController::class);
+            Route::resource('kategori_lembaga', KategoriLembagaController::class);
+            Route::get('select-kategori-lembaga', [LembagaController::class, 'get_kategori_lembaga'])->name('lembaga.select_kategori_lembaga');
+            Route::get('select-ketua-lembaga', [LembagaController::class, 'get_ketua_lembaga'])->name('lembaga.select_ketua_lembaga');
         });
 
         /**

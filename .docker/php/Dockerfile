@@ -2,7 +2,8 @@
 FROM php:7.4-fpm
 
 # Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
+# COPY composer.lock composer.json /var/www/
+COPY composer.json /var/www/
 
 # Set working directory
 WORKDIR /var/www
@@ -36,6 +37,7 @@ RUN pecl install -o -f redis \
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+
 # NPM for frontend builds
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get install -y nodejs
@@ -52,6 +54,9 @@ COPY --chown=www:www . /var/www
 
 # Change current user to www
 USER www
+
+# run composer update
+RUN composer update
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
